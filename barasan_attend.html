@@ -176,7 +176,50 @@
 
     <!-- 토스트 -->
     <div class="toast" id="toast"></div>
+    
+<!-- 기존 스크립트 위에 추가 -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot, collection }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+  // ← 여기에 복사한 firebaseConfig 붙여넣기
+  const firebaseConfig = {
+  apiKey: "AIzaSyBYy7HsTba0-FGj1Bg9QRBroJk539VJvYs",
+  authDomain: "barasan-hiking.firebaseapp.com",
+  databaseURL: "https://barasan-hiking-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "barasan-hiking",
+  storageBucket: "barasan-hiking.firebasestorage.app",
+  messagingSenderId: "949242757644",
+  appId: "1:949242757644:web:460b1111b0ff429dc66429"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 참석 상태 변경 시 DB 저장
+  async function updateStatus(id, status) {
+    await setDoc(doc(db, "members", String(id)), { status }, { merge: true });
+  }
+
+  // 이름 변경 시 DB 저장
+  async function updateName(id, name) {
+    await setDoc(doc(db, "members", String(id)), { name }, { merge: true });
+  }
+
+  // 실시간으로 DB 변화 감지 → 화면 자동 갱신
+  onSnapshot(collection(db, "members"), (snapshot) => {
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      const m = members.find(x => x.id === Number(docSnap.id));
+      if (m) {
+        m.status = data.status ?? m.status;
+        m.name   = data.name   ?? m.name;
+      }
+    });
+    renderList();
+  });
+</script>
+    
     <script>
         // ── 멤버 데이터 (이름을 직접 수정하거나, 페이지에서 편집 버튼으로 변경 가능) ──
         const STORAGE_KEY = 'barasan_members_v1';
