@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바라산 등산 경로 지도</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; }
+        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; transform: translateY(16px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        /* SVG 지도 스타일 */
+        .trail-path { stroke-dasharray: 800; stroke-dashoffset: 800; animation: drawPath 2s ease-out 0.5s forwards; }
+        @keyframes drawPath { to { stroke-dashoffset: 0; } }
+        .map-point { opacity: 0; animation: popIn 0.4s ease-out forwards; }
+        .map-point:nth-child(1) { animation-delay: 0.8s; }
+        .map-point:nth-child(2) { animation-delay: 1.2s; }
+        .map-point:nth-child(3) { animation-delay: 1.6s; }
+        .map-point:nth-child(4) { animation-delay: 2.0s; }
+        @keyframes popIn { to { opacity: 1; } }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen py-8 px-4 text-slate-800">
+    <div class="w-full max-w-md">
+
+        <!-- 뒤로가기 -->
+        <a href="barasan_main.html" class="inline-flex items-center gap-2 text-slate-500 font-semibold text-sm mb-4 hover:text-emerald-600 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+            안내 페이지로 돌아가기
+        </a>
+
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <!-- 헤더 -->
+            <div class="bg-gradient-to-br from-emerald-600 to-green-800 text-white p-6">
+                <div class="flex items-center gap-3 animate-fade-in-up">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg backdrop-blur-sm">🗺️</div>
+                    <div>
+                        <h1 class="text-xl font-extrabold">바라산 등산 경로</h1>
+                        <p class="text-emerald-100 text-xs mt-0.5">의왕 바라산자연휴양림 → 정상(428m)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <!-- 주소 카드 -->
+                <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-5 animate-fade-in-up delay-100">
+                    <div class="flex items-start gap-3">
+                        <span class="text-lg mt-0.5">📍</span>
+                        <div>
+                            <p class="text-emerald-900 font-extrabold text-sm">집결 장소 (주차장)</p>
+                            <p class="text-emerald-800 text-sm mt-0.5">경기도 의왕시 바라산로 84</p>
+                            <p class="text-emerald-600 text-xs mt-0.5">(학의동 산 117-1) · ☎ 031-8086-7482</p>
+                        </div>
+                    </div>
+                    <!-- 네이버 지도 / 카카오맵 링크 -->
+                    <div class="flex gap-2 mt-3">
+                        <a href="https://map.naver.com/v5/search/%EC%9D%98%EC%99%95%20%EB%B0%94%EB%9D%BC%EC%82%B0%EC%9E%90%EC%97%B0%ED%9C%B4%EC%96%91%EB%A6%BC" target="_blank"
+                           class="flex-1 flex items-center justify-center gap-1.5 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-bold rounded-lg transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            네이버 지도
+                        </a>
+                        <a href="https://map.kakao.com/link/search/%EB%B0%94%EB%9D%BC%EC%82%B0%EC%9E%90%EC%97%B0%ED%9C%B4%EC%96%91%EB%A6%BC" target="_blank"
+                           class="flex-1 flex items-center justify-center gap-1.5 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 text-xs font-bold rounded-lg transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            카카오맵
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SVG 경로 지도 -->
+                <div class="bg-gradient-to-b from-green-50 to-emerald-100 rounded-2xl p-4 mb-5 border border-emerald-200 animate-fade-in-up delay-200">
+                    <p class="text-emerald-800 font-extrabold text-sm mb-3 text-center">📐 등산 경로 안내도</p>
+                    <svg viewBox="0 0 340 420" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                        <!-- 배경 지형 느낌 -->
+                        <defs>
+                            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#bef264;stop-opacity:0.3"/>
+                                <stop offset="100%" style="stop-color:#86efac;stop-opacity:0.1"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- 산 실루엣 -->
+                        <polygon points="170,40 60,200 280,200" fill="url(#skyGrad)" stroke="#86efac" stroke-width="1.5" stroke-linejoin="round"/>
+                        <polygon points="100,120 30,240 180,240" fill="#dcfce7" fill-opacity="0.5" stroke="#86efac" stroke-width="1" stroke-linejoin="round"/>
+                        <polygon points="240,100 160,260 310,260" fill="#dcfce7" fill-opacity="0.4" stroke="#86efac" stroke-width="1" stroke-linejoin="round"/>
+
+                        <!-- 등산로 경로 (점선) -->
+                        <path class="trail-path"
+                              d="M 170 340 C 165 310, 155 285, 148 265 C 140 245, 138 235, 135 218 C 132 200, 128 185, 132 170 C 136 155, 155 135, 162 118 C 167 105, 168 80, 170 55"
+                              fill="none" stroke="#f59e0b" stroke-width="3.5" stroke-dasharray="8,5"
+                              stroke-linecap="round"/>
+
+                        <!-- 지점 마커들 -->
+                        <g class="map-point">
+                            <!-- P 주차장 -->
+                            <circle cx="170" cy="345" r="18" fill="#10b981" stroke="white" stroke-width="3"/>
+                            <text x="170" y="349" text-anchor="middle" font-size="11" font-weight="900" fill="white" font-family="Pretendard, sans-serif">P</text>
+                            <text x="200" y="341" font-size="11" font-weight="700" fill="#065f46" font-family="Pretendard, sans-serif">주차장 집결</text>
+                            <text x="200" y="355" font-size="10" fill="#6b7280" font-family="Pretendard, sans-serif">09:30 출발</text>
+                        </g>
+                        <g class="map-point">
+                            <!-- 365계단 -->
+                            <circle cx="147" cy="255" r="15" fill="#f59e0b" stroke="white" stroke-width="3"/>
+                            <text x="147" y="260" text-anchor="middle" font-size="9" font-weight="900" fill="white" font-family="Pretendard, sans-serif">365</text>
+                            <text x="172" y="251" font-size="11" font-weight="700" fill="#78350f" font-family="Pretendard, sans-serif">희망계단 진입</text>
+                            <text x="172" y="265" font-size="10" fill="#6b7280" font-family="Pretendard, sans-serif">09:50</text>
+                        </g>
+                        <g class="map-point">
+                            <!-- 정상 -->
+                            <circle cx="170" cy="55" r="20" fill="#ef4444" stroke="white" stroke-width="3"/>
+                            <text x="170" y="53" text-anchor="middle" font-size="10" font-weight="900" fill="white" font-family="Pretendard, sans-serif">⛰️</text>
+                            <text x="170" y="67" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="Pretendard, sans-serif">428m</text>
+                            <text x="197" y="48" font-size="11" font-weight="700" fill="#991b1b" font-family="Pretendard, sans-serif">바라산 정상</text>
+                            <text x="197" y="62" font-size="10" fill="#6b7280" font-family="Pretendard, sans-serif">10:20 도착</text>
+                        </g>
+
+                        <!-- 거리/시간 범례 -->
+                        <rect x="10" y="375" width="320" height="38" rx="10" fill="white" fill-opacity="0.8" stroke="#d1fae5" stroke-width="1"/>
+                        <text x="25" y="390" font-size="10" font-weight="700" fill="#374151" font-family="Pretendard, sans-serif">총 거리 약 1.5km</text>
+                        <text x="25" y="405" font-size="10" fill="#6b7280" font-family="Pretendard, sans-serif">소요 시간 약 50분 (주차장→정상)</text>
+                        <line x1="160" y1="378" x2="160" y2="410" stroke="#e5e7eb" stroke-width="1"/>
+                        <text x="175" y="390" font-size="10" font-weight="700" fill="#374151" font-family="Pretendard, sans-serif">난이도 ★★☆</text>
+                        <text x="175" y="405" font-size="10" fill="#6b7280" font-family="Pretendard, sans-serif">초보자도 무난한 코스</text>
+                    </svg>
+                </div>
+
+                <!-- 경로 단계 요약 -->
+                <div class="space-y-3 animate-fade-in-up delay-300">
+                    <p class="text-slate-700 font-extrabold text-sm mb-2">🚶 등산 경로 요약</p>
+                    <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100">
+                        <div class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-black flex-shrink-0">1</div>
+                        <div>
+                            <p class="text-slate-800 font-bold text-sm">주차장 출발 (09:30)</p>
+                            <p class="text-slate-500 text-xs">바라산자연휴양림 주차장에서 집결</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100">
+                        <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-black flex-shrink-0">2</div>
+                        <div>
+                            <p class="text-slate-800 font-bold text-sm">365계단(희망계단) 진입 (09:50)</p>
+                            <p class="text-slate-500 text-xs">휴양림 내 메인 등산로 합류</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-red-50 rounded-xl p-3 border border-red-100">
+                        <div class="w-7 h-7 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-black flex-shrink-0">⛰</div>
+                        <div>
+                            <p class="text-slate-800 font-bold text-sm">바라산 정상 428m 도착 (10:20)</p>
+                            <p class="text-slate-500 text-xs">정상에서 인증샷 & 조망</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100">
+                        <div class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-black flex-shrink-0">↓</div>
+                        <div>
+                            <p class="text-slate-800 font-bold text-sm">하산 시작 (10:40)</p>
+                            <p class="text-slate-500 text-xs">올라온 경로 또는 우회로로 하산</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
