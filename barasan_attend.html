@@ -13,21 +13,14 @@
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
 
-        /* 체크박스 카드 */
         .member-card {
             display: flex; align-items: center; gap: 12px;
             padding: 14px 16px; border-radius: 14px;
             border: 2px solid #e2e8f0; background: white;
-            transition: all 0.2s ease; cursor: pointer;
-            position: relative;
+            transition: all 0.2s ease; cursor: pointer; position: relative;
         }
-        .member-card.attending {
-            border-color: #10b981; background: #f0fdf4;
-        }
-        .member-card.not-attending {
-            border-color: #f87171; background: #fff5f5;
-            opacity: 0.7;
-        }
+        .member-card.attending    { border-color: #10b981; background: #f0fdf4; }
+        .member-card.not-attending { border-color: #f87171; background: #fff5f5; opacity: 0.75; }
         .member-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 
         .check-circle {
@@ -36,14 +29,9 @@
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0; transition: all 0.2s ease;
         }
-        .member-card.attending .check-circle {
-            background: #10b981; border-color: #10b981;
-        }
-        .member-card.not-attending .check-circle {
-            background: #f87171; border-color: #f87171;
-        }
+        .member-card.attending     .check-circle { background: #10b981; border-color: #10b981; }
+        .member-card.not-attending .check-circle { background: #f87171; border-color: #f87171; }
 
-        /* 이름 편집 인풋 */
         .name-input {
             border: none; background: transparent; font-weight: 700;
             font-size: 15px; color: #1e293b; font-family: 'Pretendard', sans-serif;
@@ -53,44 +41,24 @@
             background: #fff; border-bottom: 2px solid #10b981;
             cursor: text; padding: 2px 4px; border-radius: 4px;
         }
-        .name-input::placeholder { color: #94a3b8; }
 
-        /* 진행 바 */
-        .progress-bar {
-            height: 10px; border-radius: 999px; background: #e2e8f0; overflow: hidden;
-        }
+        .progress-bar { height: 10px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
         .progress-fill {
             height: 100%; border-radius: 999px;
             background: linear-gradient(90deg, #10b981, #34d399);
             transition: width 0.5s ease;
         }
 
-        /* 상단 집계 카드 */
-        .stat-card {
-            flex: 1; text-align: center; padding: 12px 8px;
-            border-radius: 14px; font-weight: 900;
-        }
+        .stat-card { flex: 1; text-align: center; padding: 12px 8px; border-radius: 14px; font-weight: 900; }
 
-        /* 편집 안내 토스트 */
-        .toast {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
-            background: #1e293b; color: white; padding: 10px 20px; border-radius: 999px;
-            font-size: 13px; font-weight: 600; white-space: nowrap;
-            transition: transform 0.3s ease; z-index: 100;
-            font-family: 'Pretendard', sans-serif;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); }
-
-        /* 상태 배지 */
         .status-badge {
             margin-left: auto; font-size: 11px; font-weight: 700;
             padding: 3px 8px; border-radius: 999px; flex-shrink: 0;
         }
-        .attending .status-badge { background: #d1fae5; color: #065f46; }
+        .attending     .status-badge { background: #d1fae5; color: #065f46; }
         .not-attending .status-badge { background: #fee2e2; color: #991b1b; }
         .member-card:not(.attending):not(.not-attending) .status-badge { background: #f1f5f9; color: #64748b; }
 
-        /* 편집 버튼 */
         .edit-btn {
             padding: 4px 10px; font-size: 11px; font-weight: 700;
             border-radius: 8px; border: 1px solid #e2e8f0;
@@ -98,133 +66,164 @@
             transition: all 0.15s ease; flex-shrink: 0;
         }
         .edit-btn:hover { background: #f1f5f9; }
+
+        /* DB 연결 상태 */
+        .db-status {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; font-weight: 600; padding: 4px 10px;
+            border-radius: 999px; transition: all 0.3s ease;
+        }
+        .db-status.connected    { background: rgba(255,255,255,0.2); color: #ffffff; }
+        .db-status.connecting   { background: rgba(255,255,255,0.15); color: #fef3c7; }
+        .db-status.disconnected { background: rgba(255,100,100,0.3); color: #fecaca; }
+        .db-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .connected    .db-dot { background: #6ee7b7; animation: blink 2s ease-in-out infinite; }
+        .connecting   .db-dot { background: #fcd34d; animation: blink 0.7s ease-in-out infinite; }
+        .disconnected .db-dot { background: #fca5a5; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        /* 토스트 */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%;
+            transform: translateX(-50%) translateY(60px);
+            background: #1e293b; color: white; padding: 10px 20px;
+            border-radius: 999px; font-size: 13px; font-weight: 600;
+            white-space: nowrap; transition: transform 0.3s ease; z-index: 100;
+            font-family: 'Pretendard', sans-serif;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* 로딩 스켈레톤 */
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+            border-radius: 14px; height: 62px;
+        }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen py-8 px-4 text-slate-800">
-    <div class="w-full max-w-md">
+<div class="w-full max-w-md">
 
-        <!-- 뒤로가기 -->
-        <a href="index.html" class="inline-flex items-center gap-2 text-slate-500 font-semibold text-sm mb-4 hover:text-emerald-600 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
-            안내 페이지로 돌아가기
-        </a>
+    <!-- 뒤로가기 -->
+    <a href="index.html" class="inline-flex items-center gap-2 text-slate-500 font-semibold text-sm mb-4 hover:text-emerald-600 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+        </svg>
+        안내 페이지로 돌아가기
+    </a>
 
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <!-- 헤더 -->
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6">
-                <div class="flex items-center gap-3 animate-fade-in-up">
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+
+        <!-- 헤더 -->
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6">
+            <div class="flex items-center justify-between animate-fade-in-up">
+                <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg backdrop-blur-sm">✅</div>
                     <div>
                         <h1 class="text-xl font-extrabold">참석 현황</h1>
                         <p class="text-blue-100 text-xs mt-0.5">부곡이웃교회 남성목장 · 바라산 산행</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="p-6">
-
-                <!-- 집계 현황 -->
-                <div class="animate-fade-in-up delay-100 mb-6">
-                    <div class="flex gap-3 mb-4">
-                        <div class="stat-card bg-emerald-50 border border-emerald-100">
-                            <div class="text-3xl text-emerald-600" id="attendCount">0</div>
-                            <div class="text-xs text-emerald-700 mt-1">참석</div>
-                        </div>
-                        <div class="stat-card bg-red-50 border border-red-100">
-                            <div class="text-3xl text-red-400" id="absentCount">0</div>
-                            <div class="text-xs text-red-600 mt-1">불참</div>
-                        </div>
-                        <div class="stat-card bg-slate-50 border border-slate-100">
-                            <div class="text-3xl text-slate-400" id="pendingCount">9</div>
-                            <div class="text-xs text-slate-500 mt-1">미응답</div>
-                        </div>
-                        <div class="stat-card bg-blue-50 border border-blue-100">
-                            <div class="text-3xl text-blue-600">9</div>
-                            <div class="text-xs text-blue-700 mt-1">전체</div>
-                        </div>
-                    </div>
-                    <!-- 진행 바 -->
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between text-xs text-slate-400 mt-1">
-                        <span>참석률</span>
-                        <span id="progressLabel">0 / 9</span>
-                    </div>
+                <div class="db-status connecting" id="dbStatus">
+                    <div class="db-dot"></div>
+                    <span id="dbStatusText">연결 중...</span>
                 </div>
-
-                <!-- 안내 문구 -->
-                <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-5 text-xs text-blue-700 font-medium animate-fade-in-up delay-100">
-                    💡 카드를 탭하면 참석 여부를 변경할 수 있습니다.<br>
-                    이름 옆 <span class="font-bold bg-white px-1 rounded">✏️ 수정</span> 버튼을 눌러 이름을 편집하세요.
-                </div>
-
-                <!-- 멤버 리스트 -->
-                <div class="space-y-3 animate-fade-in-up delay-200" id="memberList">
-                    <!-- JS로 렌더링 -->
-                </div>
-
-                <!-- 초기화 버튼 -->
-                <button onclick="resetAll()"
-                    class="mt-6 w-full py-3 rounded-xl border-2 border-slate-200 text-slate-500 font-bold text-sm hover:bg-slate-50 transition-colors">
-                    🔄 모두 초기화
-                </button>
-
             </div>
         </div>
+
+        <div class="p-6">
+
+            <!-- 집계 -->
+            <div class="animate-fade-in-up delay-100 mb-6">
+                <div class="flex gap-3 mb-4">
+                    <div class="stat-card bg-emerald-50 border border-emerald-100">
+                        <div class="text-3xl text-emerald-600" id="attendCount">-</div>
+                        <div class="text-xs text-emerald-700 mt-1">참석</div>
+                    </div>
+                    <div class="stat-card bg-red-50 border border-red-100">
+                        <div class="text-3xl text-red-400" id="absentCount">-</div>
+                        <div class="text-xs text-red-600 mt-1">불참</div>
+                    </div>
+                    <div class="stat-card bg-slate-50 border border-slate-100">
+                        <div class="text-3xl text-slate-400" id="pendingCount">-</div>
+                        <div class="text-xs text-slate-500 mt-1">미응답</div>
+                    </div>
+                    <div class="stat-card bg-blue-50 border border-blue-100">
+                        <div class="text-3xl text-blue-600">9</div>
+                        <div class="text-xs text-blue-700 mt-1">전체</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width:0%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>참석률</span>
+                    <span id="progressLabel">- / 9</span>
+                </div>
+            </div>
+
+            <!-- 안내 문구 -->
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-5 text-xs text-blue-700 font-medium animate-fade-in-up delay-100">
+                💡 카드를 탭하면 참석 여부가 변경되며 <strong>모든 기기에 실시간 반영</strong>됩니다.<br>
+                이름 옆 <span class="font-bold bg-white px-1 rounded">✏️ 수정</span> 버튼으로 이름을 편집하세요.
+            </div>
+
+            <!-- 멤버 리스트 -->
+            <div class="space-y-3 animate-fade-in-up delay-200" id="memberList">
+                <div class="skeleton"></div>
+                <div class="skeleton" style="animation-delay:.1s"></div>
+                <div class="skeleton" style="animation-delay:.2s"></div>
+                <div class="skeleton" style="animation-delay:.3s"></div>
+                <div class="skeleton" style="animation-delay:.4s"></div>
+                <div class="skeleton" style="animation-delay:.5s"></div>
+                <div class="skeleton" style="animation-delay:.6s"></div>
+                <div class="skeleton" style="animation-delay:.7s"></div>
+                <div class="skeleton" style="animation-delay:.8s"></div>
+            </div>
+
+            <!-- 초기화 버튼 -->
+            <button onclick="resetAll()"
+                class="mt-6 w-full py-3 rounded-xl border-2 border-slate-200 text-slate-500 font-bold text-sm hover:bg-slate-50 transition-colors">
+                🔄 모두 초기화
+            </button>
+
+        </div>
     </div>
+</div>
 
-    <!-- 토스트 -->
-    <div class="toast" id="toast"></div>
-    
-<!-- 기존 스크립트 위에 추가 -->
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase Realtime Database -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, onSnapshot, collection }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, update, set }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ← 여기에 복사한 firebaseConfig 붙여넣기
-  const firebaseConfig = {
-  apiKey: "AIzaSyBYy7HsTba0-FGj1Bg9QRBroJk539VJvYs",
-  authDomain: "barasan-hiking.firebaseapp.com",
-  databaseURL: "https://barasan-hiking-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "barasan-hiking",
-  storageBucket: "barasan-hiking.firebasestorage.app",
-  messagingSenderId: "949242757644",
-  appId: "1:949242757644:web:460b1111b0ff429dc66429"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+/* ────────────────────────────
+   Firebase 초기화
+──────────────────────────── */
+const firebaseConfig = {
+    apiKey:            "AIzaSyBYy7HsTba0-FGj1Bg9QRBroJk539VJvYs",
+    authDomain:        "barasan-hiking.firebaseapp.com",
+    databaseURL:       "https://barasan-hiking-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:         "barasan-hiking",
+    storageBucket:     "barasan-hiking.firebasestorage.app",
+    messagingSenderId: "949242757644",
+    appId:             "1:949242757644:web:460b1111b0ff429dc66429"
+};
 
-  // 참석 상태 변경 시 DB 저장
-  async function updateStatus(id, status) {
-    await setDoc(doc(db, "members", String(id)), { status }, { merge: true });
-  }
+const app        = initializeApp(firebaseConfig);
+const db         = getDatabase(app);
+const membersRef = ref(db, 'members');
 
-  // 이름 변경 시 DB 저장
-  async function updateName(id, name) {
-    await setDoc(doc(db, "members", String(id)), { name }, { merge: true });
-  }
-
-  // 실시간으로 DB 변화 감지 → 화면 자동 갱신
-  onSnapshot(collection(db, "members"), (snapshot) => {
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      const m = members.find(x => x.id === Number(docSnap.id));
-      if (m) {
-        m.status = data.status ?? m.status;
-        m.name   = data.name   ?? m.name;
-      }
-    });
-    renderList();
-  });
-</script>
-    
-    <script>
-        // ── 멤버 데이터 (이름을 직접 수정하거나, 페이지에서 편집 버튼으로 변경 가능) ──
-        const STORAGE_KEY = 'barasan_members_v1';
-
-        const defaultMembers = [
+/* ────────────────────────────
+   기본 멤버 데이터
+──────────────────────────── */
+const defaultMembers = [
             { id: 1, name: '목사님', status: 'pending' },
             { id: 2, name: '전도사님', status: 'pending' },
             { id: 3, name: '정현국', status: 'pending' },
@@ -234,135 +233,195 @@
             { id: 7, name: '전연태', status: 'pending' },
             { id: 8, name: '김일영', status: 'pending' },
             { id: 9, name: '김선민', status: 'pending' },
-        ];
+];
 
-        // 로컬 스토리지에서 데이터 로드 (없으면 기본값)
-        function loadMembers() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                return saved ? JSON.parse(saved) : [...defaultMembers.map(m => ({...m}))];
-            } catch { return [...defaultMembers.map(m => ({...m}))]; }
+let members     = defaultMembers.map(m => ({...m}));
+let initialized = false;
+
+/* ────────────────────────────
+   DB 연결 상태 감지
+──────────────────────────── */
+onValue(ref(db, '.info/connected'), snap => {
+    const el   = document.getElementById('dbStatus');
+    const text = document.getElementById('dbStatusText');
+    if (snap.val()) {
+        el.className     = 'db-status connected';
+        text.textContent = '실시간 연결됨';
+    } else {
+        el.className     = 'db-status disconnected';
+        text.textContent = '연결 끊김';
+    }
+});
+
+/* ────────────────────────────
+   DB 실시간 구독
+──────────────────────────── */
+onValue(membersRef, async snap => {
+    const data = snap.val();
+
+    if (!data) {
+        /* DB가 비어있으면 기본값으로 초기화 */
+        const init = {};
+        defaultMembers.forEach(m => {
+            init[m.id] = { name: m.name, status: m.status };
+        });
+        await set(membersRef, init);
+        return;
+    }
+
+    /* DB → 로컬 배열 동기화 */
+    members.forEach(m => {
+        const row = data[m.id];
+        if (row) {
+            m.name   = row.name   ?? m.name;
+            m.status = row.status ?? m.status;
         }
+    });
 
-        function saveMembers() {
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(members)); } catch {}
-        }
+    renderList();
+    initialized = true;
+});
 
-        let members = loadMembers();
+/* ────────────────────────────
+   상태 토글 (pending → attending → not-attending → pending)
+──────────────────────────── */
+window.toggleStatus = function(id, event) {
+    if (event.target.closest('.edit-btn')) return;
+    const input = document.getElementById(`name-${id}`);
+    if (input && !input.readOnly) return;
 
-        function getStatusLabel(status) {
-            if (status === 'attending') return '참석 ✓';
-            if (status === 'not-attending') return '불참 ✗';
-            return '미응답';
-        }
+    const m = members.find(x => x.id === id);
+    if (!m) return;
 
-        function renderList() {
-            const list = document.getElementById('memberList');
-            list.innerHTML = '';
-            members.forEach((m, idx) => {
-                const card = document.createElement('div');
-                card.className = `member-card ${m.status === 'attending' ? 'attending' : m.status === 'not-attending' ? 'not-attending' : ''}`;
-                card.dataset.id = m.id;
+    const next =
+        m.status === 'pending'       ? 'attending'     :
+        m.status === 'attending'     ? 'not-attending' : 'pending';
 
-                card.innerHTML = `
-                    <div class="check-circle" onclick="toggleStatus(${m.id}, event)">
-                        ${m.status === 'attending'
-                            ? '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>'
-                            : m.status === 'not-attending'
-                            ? '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>'
-                            : ''}
-                    </div>
-                    <div class="flex-1 min-w-0" onclick="toggleStatus(${m.id}, event)">
-                        <input class="name-input" id="name-${m.id}" value="${m.name}"
-                            readonly onclick="event.stopPropagation()"
-                            onkeydown="handleNameKey(event, ${m.id})"
-                            onblur="saveName(${m.id})"/>
-                        <div class="text-xs text-slate-400 mt-0.5">멤버 ${idx + 1}</div>
-                    </div>
-                    <button class="edit-btn" onclick="startEdit(${m.id}, event)">✏️ 수정</button>
-                    <span class="status-badge">${getStatusLabel(m.status)}</span>
-                `;
-                list.appendChild(card);
-            });
-            updateStats();
-        }
+    update(ref(db, `members/${id}`), { status: next });
 
-        function toggleStatus(id, event) {
-            // 편집 버튼 클릭 시 무시
-            if (event.target.classList.contains('edit-btn') || event.target.closest('.edit-btn')) return;
-            // 이름 인풋 편집 중이면 무시
-            const input = document.getElementById(`name-${id}`);
-            if (input && !input.readOnly) return;
+    showToast(
+        next === 'attending'     ? `${m.name} 참석 ✓` :
+        next === 'not-attending' ? `${m.name} 불참 ✗` :
+                                   `${m.name} 미응답으로 변경`
+    );
+};
 
-            const m = members.find(x => x.id === id);
-            if (!m) return;
-            if (m.status === 'pending') m.status = 'attending';
-            else if (m.status === 'attending') m.status = 'not-attending';
-            else m.status = 'pending';
-            saveMembers();
-            renderList();
-            showToast(m.status === 'attending' ? `${m.name} 참석 ✓` : m.status === 'not-attending' ? `${m.name} 불참 ✗` : `${m.name} 미응답으로 변경`);
-        }
+/* ────────────────────────────
+   이름 편집
+──────────────────────────── */
+window.startEdit = function(id, event) {
+    event.stopPropagation();
+    const input = document.getElementById(`name-${id}`);
+    if (!input) return;
+    input.readOnly = false;
+    input.classList.add('editing');
+    input.focus();
+    input.select();
+};
 
-        function startEdit(id, event) {
-            event.stopPropagation();
-            const input = document.getElementById(`name-${id}`);
-            if (!input) return;
-            input.readOnly = false;
-            input.classList.add('editing');
-            input.focus();
-            input.select();
-        }
+window.saveName = function(id) {
+    const input = document.getElementById(`name-${id}`);
+    if (!input) return;
+    const m       = members.find(x => x.id === id);
+    const newName = input.value.trim() || (m ? m.name : `성도${id}`);
+    input.readOnly = true;
+    input.classList.remove('editing');
+    input.value = newName;
+    update(ref(db, `members/${id}`), { name: newName });
+    showToast(`이름이 "${newName}"으로 저장되었습니다`);
+};
 
-        function saveName(id) {
-            const input = document.getElementById(`name-${id}`);
-            if (!input) return;
-            const newName = input.value.trim() || `성도${id}`;
-            const m = members.find(x => x.id === id);
-            if (m) { m.name = newName; saveMembers(); }
-            input.readOnly = true;
-            input.classList.remove('editing');
-            input.value = newName;
-        }
+window.handleNameKey = function(event, id) {
+    if (event.key === 'Enter')  { event.target.blur(); }
+    if (event.key === 'Escape') {
+        const m = members.find(x => x.id === id);
+        event.target.value = m ? m.name : '';
+        event.target.blur();
+    }
+};
 
-        function handleNameKey(event, id) {
-            if (event.key === 'Enter') { event.target.blur(); }
-            if (event.key === 'Escape') {
-                const m = members.find(x => x.id === id);
-                event.target.value = m ? m.name : '';
-                event.target.blur();
-            }
-        }
+/* ────────────────────────────
+   전체 초기화
+──────────────────────────── */
+window.resetAll = async function() {
+    if (!confirm('모든 참석 여부를 미응답으로 초기화하시겠습니까?')) return;
+    const updates = {};
+    members.forEach(m => { updates[`${m.id}/status`] = 'pending'; });
+    await update(membersRef, updates);
+    showToast('초기화 완료');
+};
 
-        function updateStats() {
-            const attending = members.filter(m => m.status === 'attending').length;
-            const absent = members.filter(m => m.status === 'not-attending').length;
-            const pending = members.filter(m => m.status === 'pending').length;
-            document.getElementById('attendCount').textContent = attending;
-            document.getElementById('absentCount').textContent = absent;
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('progressBar').style.width = `${(attending / members.length) * 100}%`;
-            document.getElementById('progressLabel').textContent = `${attending} / ${members.length}`;
-        }
+/* ────────────────────────────
+   화면 렌더링
+──────────────────────────── */
+function renderList() {
+    const list = document.getElementById('memberList');
+    list.innerHTML = '';
 
-        function resetAll() {
-            if (!confirm('모든 참석 여부를 초기화하시겠습니까?')) return;
-            members.forEach(m => m.status = 'pending');
-            saveMembers();
-            renderList();
-            showToast('초기화 완료');
-        }
+    members.forEach((m, idx) => {
+        const cls = m.status === 'attending'     ? 'attending'
+                  : m.status === 'not-attending' ? 'not-attending' : '';
 
-        let toastTimer;
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
-        }
+        const checkIcon =
+            m.status === 'attending'
+                ? `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                   </svg>`
+            : m.status === 'not-attending'
+                ? `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+                   </svg>` : '';
 
-        renderList();
-    </script>
+        const badge =
+            m.status === 'attending'     ? '참석 ✓' :
+            m.status === 'not-attending' ? '불참 ✗' : '미응답';
+
+        const card = document.createElement('div');
+        card.className = `member-card ${cls}`;
+        card.innerHTML = `
+            <div class="check-circle" onclick="toggleStatus(${m.id}, event)">${checkIcon}</div>
+            <div class="flex-1 min-w-0" onclick="toggleStatus(${m.id}, event)">
+                <input class="name-input" id="name-${m.id}"
+                    value="${m.name}" readonly
+                    onclick="event.stopPropagation()"
+                    onkeydown="handleNameKey(event, ${m.id})"
+                    onblur="saveName(${m.id})"/>
+                <div class="text-xs text-slate-400 mt-0.5">멤버 ${idx + 1}</div>
+            </div>
+            <button class="edit-btn" onclick="startEdit(${m.id}, event)">✏️ 수정</button>
+            <span class="status-badge">${badge}</span>
+        `;
+        list.appendChild(card);
+    });
+
+    updateStats();
+}
+
+function updateStats() {
+    const attending = members.filter(m => m.status === 'attending').length;
+    const absent    = members.filter(m => m.status === 'not-attending').length;
+    const pending   = members.filter(m => m.status === 'pending').length;
+
+    document.getElementById('attendCount').textContent  = attending;
+    document.getElementById('absentCount').textContent  = absent;
+    document.getElementById('pendingCount').textContent = pending;
+    document.getElementById('progressBar').style.width  =
+        `${Math.round((attending / members.length) * 100)}%`;
+    document.getElementById('progressLabel').textContent =
+        `${attending} / ${members.length}`;
+}
+
+/* ────────────────────────────
+   토스트 메시지
+──────────────────────────── */
+let toastTimer;
+window.showToast = function(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+};
+</script>
 </body>
 </html>
